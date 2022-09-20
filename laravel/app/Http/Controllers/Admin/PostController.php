@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    protected $validationForm = [
+        'title' => 'required|min:3|max:255',
+        'post_content' => 'required|min:10',
+        'post_image' => 'required|min:3|',
+    ];
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -63,6 +71,8 @@ class PostController extends Controller
     public function edit($id)
     {
         //
+        $post = Post::findOrFail($id);
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
@@ -75,6 +85,18 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validated = $request->validate($this->validationForm);
+
+
+        $data = $request->all();
+        $post = Post::findOrFail($id);
+
+        $post->title = $data['title'];
+        $post->description = $data['post_content'];
+        $post->thumb = $data['post_image'];
+
+        $post->save();
+        return redirect()->route('admine.posts.show', $post->id);
     }
 
     /**

@@ -8,16 +8,17 @@
         <th>ID</th>
         <th>AUTHOR</th>
         <th>TITLE</th>
+        <th>Button</th>
 
     </thead>
-    <tbody>
+    <tbody class="text-center">
         @forelse ($posts as $post)
         <tr>
             <td>{{$post->id}}</td>
             <td>{{$post->author}}</td>
             <td><a href="{{route('admin.posts.show', $post->id)}}">{{$post->title}}</a></td>
             <td>
-                <a href="" class="btn px-3 mx-2  btn-sm btn-primary">Edit</a>
+                <a href="{{route('admin.posts.edit', $post->id)}}" class="btn px-3 mx-2  btn-sm btn-primary">Edit</a>
                 <form action="" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
