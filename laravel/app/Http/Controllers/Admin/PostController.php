@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -36,6 +38,9 @@ class PostController extends Controller
     public function create()
     {
         //
+        $post = new Post();
+        return view('admin.posts.create', compact('post'));
+
     }
 
     /**
@@ -47,6 +52,25 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate($this->validationForm);
+
+
+        $data = $request->all();
+        $data['author'] = Auth::user()->name;
+
+        $data['post_date'] = new DateTime();
+        
+        Post::create($data);
+        return redirect()->route('admin.posts.index')->with('success', 'Il post ' . $data["title"] . " è stato creato con successo");
+
+        $post = new Post();
+        $post->title = $data['title'];
+        $post->post_content = $data['post_content'];
+        $post->post_image = $data['post_image'];
+
+
+        $post->save();
+        return redirect()->route('admin.posts.show', $post->id);
     }
 
     /**
@@ -108,5 +132,8 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        $post = Post::findOrFail($id);
+        $post->delete();
+        return redirect()->route('admin.posts.index')->with('deleted', 'Il post ' . $post->title . ' è stato eliminato con successo');
     }
 }
