@@ -16,7 +16,7 @@
             <h5 class="card-title m-3">{{$post->author}}</h5>
             <h3 class="card-title m-3">{{$post->title}}</h3>
             <p class="card-text m-3">{{$post->post_content}}</p>
-            <a href="" class="btn px-3 mx-2  btn-sm btn-primary">Edit</a>
+            <a href="{{route('admin.posts.edit', $post->id)}}" class="btn px-3 mx-2  btn-sm btn-primary">Edit</a>
             <form action="" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')

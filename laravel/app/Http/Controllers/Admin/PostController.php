@@ -92,11 +92,11 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
 
         $post->title = $data['title'];
-        $post->description = $data['post_content'];
-        $post->thumb = $data['post_image'];
+        $post->post_content = $data['post_content'];
+        $post->post_image = $data['post_image'];
 
         $post->save();
-        return redirect()->route('admine.posts.show', $post->id);
+        return redirect()->route('admin.posts.show', $post->id);
     }
 
     /**
